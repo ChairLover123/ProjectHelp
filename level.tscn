@@ -1,7 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://se1agfbg8a1x"]
-
-[ext_resource type="Script" path="res://Level.gd" id="1_af48p"]
-[ext_resource type="PackedScene" uid="uid://vxlruy6v7pb7" path="res://ball.tscn" id="2_w2lrs"]
+[gd_scene load_steps=8 format=3 uid="uid://se1agfbg8a1x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gxoq5"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -14,18 +11,6 @@ sky_material = SubResource("ProceduralSkyMaterial_gxoq5")
 background_mode = 2
 sky = SubResource("Sky_8w0sm")
 tonemap_mode = 2
-
-[sub_resource type="GDScript" id="GDScript_3dh7f"]
-script/source = "extends StaticBody3D
-
-@onready var spawn_object = preload(\"res://ball.tscn\")
-func spawn():
-	var obj = spawn_object.insantiate()
-	add_child(obj)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tt4k1"]
 size = Vector3(40, 1, 40)
@@ -40,7 +25,6 @@ size = Vector3(40, 1, 40)
 size = Vector3(40, 40, 1)
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource("1_af48p")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.187381, -0.552127, 0.812431, 0, 0.827081, 0.562083, -0.982287, 0.105324, -0.154979, 0, 0, 0)
@@ -50,7 +34,6 @@ shadow_enabled = true
 environment = SubResource("Environment_qepme")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-script = SubResource("GDScript_3dh7f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.129598, 0)
@@ -60,12 +43,13 @@ shape = SubResource("BoxShape3D_tt4k1")
 mesh = SubResource("PlaneMesh_t4bar")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.37127, 26.0384)
+transform = Transform3D(-1, -6.18172e-08, 6.18172e-08, 0, 0.707107, 0.707107, -8.74228e-08, 0.707107, -0.707107, 0, 15, -26)
 
 [node name="Borders" type="Node3D" parent="."]
 
 [node name="Top" type="StaticBody3D" parent="Borders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Borders/Top"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
@@ -73,6 +57,7 @@ shape = SubResource("BoxShape3D_nuh3h")
 
 [node name="Right" type="StaticBody3D" parent="Borders"]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, -30, 7.5, 0)
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Borders/Right"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -80,6 +65,7 @@ shape = SubResource("BoxShape3D_1dbtf")
 
 [node name="Left" type="StaticBody3D" parent="Borders"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10, 7.5, 0)
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Borders/Left"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -87,17 +73,15 @@ shape = SubResource("BoxShape3D_1dbtf")
 
 [node name="Front" type="StaticBody3D" parent="Borders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, -20)
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Borders/Front"]
 shape = SubResource("BoxShape3D_1dbtf")
 
 [node name="Back" type="StaticBody3D" parent="Borders"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)
+input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Borders/Back"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
 shape = SubResource("BoxShape3D_1dbtf")
-
-[node name="RigidBody3D" parent="." instance=ExtResource("2_w2lrs")]
-
-[connection signal="input_event" from="RigidBody3D" to="." method="_on_rigid_body_3d_input_event"]

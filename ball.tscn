@@ -1,25 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://vxlruy6v7pb7"]
+[gd_scene load_steps=8 format=3 uid="uid://vxlruy6v7pb7"]
 
 [ext_resource type="Script" path="res://ball.gd" id="1_kmnxw"]
 [ext_resource type="AudioStream" uid="uid://bnn7os4xg0yi8" path="res://162 Queen's Rd East 3.mp3" id="2_eskrq"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xp40t"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hkx35"]
 friction = 0.0
-bounce = 4.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_bg7ka"]
-radius = 1.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_xgmrr"]
-radius = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_r05ph"]
-radius = 1.0
-height = 2.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmj0q"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4d6wv"]
+bounce = 1.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tv4vd"]
 emission_shape_offset = Vector3(1, 0, 1)
@@ -29,19 +15,30 @@ gravity = Vector3(0, 0, 0)
 
 [sub_resource type="QuadMesh" id="QuadMesh_sgie6"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_xgmrr"]
+radius = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_r05ph"]
+radius = 1.0
+height = 2.0
+
 [node name="Sphere" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
-mass = 0.001
-physics_material_override = SubResource("PhysicsMaterial_xp40t")
-linear_velocity = Vector3(10, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_hkx35")
+linear_velocity = Vector3(10, 5, 0)
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_kmnxw")
 
-[node name="ClickSignal" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ClickSignal"]
-shape = SubResource("SphereShape3D_bg7ka")
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.02229, 0)
+top_level = true
+emitting = false
+amount = 30
+one_shot = true
+explosiveness = 0.4
+process_material = SubResource("ParticleProcessMaterial_tv4vd")
+draw_pass_1 = SubResource("QuadMesh_sgie6")
 
 [node name="CollisionShapeSphere" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_xgmrr")
@@ -50,17 +47,9 @@ shape = SubResource("SphereShape3D_xgmrr")
 mesh = SubResource("SphereMesh_r05ph")
 skeleton = NodePath("../CollisionShapeSphere")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-material_override = SubResource("StandardMaterial3D_fmj0q")
-material_overlay = SubResource("StandardMaterial3D_4d6wv")
-emitting = false
-amount = 30
-one_shot = true
-explosiveness = 0.4
-process_material = SubResource("ParticleProcessMaterial_tv4vd")
-draw_pass_1 = SubResource("QuadMesh_sgie6")
-
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0222874, 0)
 stream = ExtResource("2_eskrq")
+volume_db = 9.143
 
-[connection signal="input_event" from="ClickSignal" to="." method="_on_click_signal_input_event"]
+[connection signal="input_event" from="." to="." method="_on_input_event"]
