@@ -8,11 +8,11 @@ var restart = false
 var i = 0
 func _ready() -> void:
 	randomize()
-	#for i in range(ballcnt):
-	objectcount+=1
-	var object = ball.instantiate()
-	object.position = Vector3(randf_range(-5,5), 7.5, randf_range(-5,5))
-	add_child(object)
+	for i in range(ballcnt):
+		objectcount+=1
+		var object = ball.instantiate()
+		object.position = Vector3(randf_range(-5,5), 7.5, randf_range(-5,5))
+		add_child(object)
 func _process(delta):
 	if objectcount <= 0 && score > 0:
 		get_tree().change_scene_to_file("res://end_menu.tscn")
